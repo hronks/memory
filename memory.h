@@ -1,29 +1,25 @@
 #ifndef MEMORY
 #define MEMORY
 
-#include<stdio.h> // used for printroot
-
 struct MemorySpaceHeader {
 
-    void *data;
-    void *next;
-
-    struct MemoryBlock *root[32];
-    struct MemoryBlock *current[32];
+    unsigned size;
+    unsigned usage;
+    struct MemoryBlockHeader *frontier;
+    struct MemoryBlockHeader *free[32];
 };
 
-struct MemoryBlock {
+struct MemoryBlockHeader {
 
+    struct MemorySpaceHeader *root;
     unsigned char order;
-    void *next;
-    void *previous;
-    unsigned int size;
-    void *data;
+    struct MemoryBlockHeader *next;
 };
 
-
-void prime_MemorySpace(void *root);
-void print_MemorySpace(void *root);
-void *allocate_MemorySpace(void *root, unsigned char order);
+int prime_MemorySpace(void *root, unsigned size);
+void *allocate_MemorySpace(void *space, unsigned char order);
+void free_MemorySpace(void *root);
+void *reallocate_MemorySpace(void *root, unsigned char order);
+void *reallocate_truncated_MemorySpace(void *root, unsigned char order, unsigned trunc_limit);
 
 #endif

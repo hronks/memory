@@ -1,22 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "memory.h"
+#include "memory_util.h"
+#include <time.h>
 
 int main() {
 
     printf("hello!\n");
 
-    char space[100000];
-    prime_MemorySpace(space);
-    printf("\n");
-    print_MemorySpace(space);
+    int space[100000];
+    prime_MemorySpace(space, 100000 * sizeof(int));
+    char *s1;
+    printf("!\n");
 
+    for(int i = 0; i < 500000000; ++i) {
+        s1 = allocate_MemorySpace(space, 3);
+        free_MemorySpace(s1);
+    }
+    printf("!\n");
 
-    printf("\n%p\n", allocate_MemorySpace(space, 4));
-    print_MemorySpace(space);
+    for(int i = 0; i < 500000000; ++i) {
+        s1 = malloc(8);
+        free(s1);
+    }
+    printf("!\n");
 
-    printf("\n%p\n", allocate_MemorySpace(space, 3));
-    print_MemorySpace(space);
-
-//    for(int i = 0; i < 1000; ++i)
-//        printf("%p ", space + i);
+    return 0;
 }
